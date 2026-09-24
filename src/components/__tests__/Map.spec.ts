@@ -68,7 +68,7 @@ describe('Map.vue', () => {
     const wrapper = mount(Map)
     await new Promise(resolve => setTimeout(resolve, 0))
 
-    // 3 library markers + 3 fallback community center markers = 6
-    expect(L.marker).toHaveBeenCalledTimes(6)
+    // 3 library markers + 10 fallback community center markers = 13
+    expect(L.marker).toHaveBeenCalledTimes(13)
   })
 })

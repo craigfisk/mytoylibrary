@@ -83,18 +83,38 @@ const fetchCommunityCenters = async () => {
   // Using Overpass API to get community centers in the area
   let elements = []
   try {
-    const query = `[out:json];node["amenity"="community_centre"](44.7,-93.5,45.2,-92.9);out 20;`
-    const res = await fetch('https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(query))
+    // 20 miles is ~32187 meters. Search around the 3 toy library locations.
+    const query = `
+      [out:json];
+      (
+        node["amenity"="community_centre"](around:32187,45.0039,-93.2570);
+        node["amenity"="community_centre"](around:32187,44.9602,-93.2324);
+        node["amenity"="community_centre"](around:32187,44.9387,-93.1557);
+      );
+      out;
+    `
+    const res = await fetch('https://overpass-api.de/api/interpreter', {
+      method: 'POST',
+      body: query
+    })
+    
     if (!res.ok) throw new Error('API response not ok')
     const data = await res.json()
     elements = data.elements || []
   } catch(e) {
     console.error('Error fetching community centers, using fallback data', e)
-    // Fallback data in case the overpass API is down or blocking
+    // Fallback data in case the overpass API is down or blocked
     elements = [
       { id: 1001, tags: { name: 'Luxton Community Center' }, lat: 44.9634, lon: -93.2124 },
       { id: 1002, tags: { name: 'MLK Recreation Center' }, lat: 44.9382, lon: -93.2709 },
-      { id: 1003, tags: { name: 'East Phillips Park Cultural and Community Center' }, lat: 44.9546, lon: -93.2519 }
+      { id: 1003, tags: { name: 'East Phillips Park Cultural and Community Center' }, lat: 44.9546, lon: -93.2519 },
+      { id: 1004, tags: { name: 'Logan Park Community Center' }, lat: 45.0028, lon: -93.2520 },
+      { id: 1005, tags: { name: 'Windom NE Recreation Center' }, lat: 45.0125, lon: -93.2386 },
+      { id: 1006, tags: { name: 'Painter Park Recreation Center' }, lat: 44.9388, lon: -93.2921 },
+      { id: 1007, tags: { name: 'Powderhorn Park Recreation Center' }, lat: 44.9405, lon: -93.2562 },
+      { id: 1008, tags: { name: 'Whittier Park Recreation Center' }, lat: 44.9587, lon: -93.2848 },
+      { id: 1009, tags: { name: 'Stewart Park Recreation Center' }, lat: 44.9525, lon: -93.2625 },
+      { id: 1010, tags: { name: 'Waite Park Recreation Center' }, lat: 45.0313, lon: -93.2359 }
     ]
   }
 
