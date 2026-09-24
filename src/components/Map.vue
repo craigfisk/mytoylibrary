@@ -82,15 +82,8 @@ const initMap = async () => {
 const fetchCommunityCenters = async () => {
   // Using Overpass API to get community centers in the area
   try {
-    const query = `
-      [out:json];
-      node["amenity"="community_centre"](44.7,-93.5,45.2,-92.9);
-      out 20;
-    `
-    const res = await fetch('https://overpass-api.de/api/interpreter', {
-      method: 'POST',
-      body: query
-    })
+    const query = `[out:json];node["amenity"="community_centre"](44.7,-93.5,45.2,-92.9);out 20;`
+    const res = await fetch('https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(query))
     const data = await res.json()
     communityCenters.value = data.elements.map((el: any) => ({
       id: el.id,
