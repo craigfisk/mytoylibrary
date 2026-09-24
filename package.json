@@ -1,0 +1,40 @@
+{
+  "name": "mntoylibrary",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/craigfisk/mytoylibrary.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/craigfisk/mytoylibrary/issues"
+  },
+  "homepage": "https://github.com/craigfisk/mytoylibrary#readme",
+  "dependencies": {
+    "leaflet": "^1.9.4",
+    "vue": "^3.5.43"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/leaflet": "^1.9.22",
+    "@types/node": "^26.6.2",
+    "@vitejs/plugin-vue": "^6.0.9",
+    "autoprefixer": "^10.6.1",
+    "postcss": "^8.5.28",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.1",
+    "vue-tsc": "^3.3.11"
+  }
+}
