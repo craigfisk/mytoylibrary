@@ -81,32 +81,42 @@ const initMap = async () => {
 
 const fetchCommunityCenters = async () => {
   // Using Overpass API to get community centers in the area
+  let elements = []
   try {
     const query = `[out:json];node["amenity"="community_centre"](44.7,-93.5,45.2,-92.9);out 20;`
     const res = await fetch('https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(query))
+    if (!res.ok) throw new Error('API response not ok')
     const data = await res.json()
-    communityCenters.value = data.elements.map((el: any) => ({
-      id: el.id,
-      name: el.tags.name || 'Community Center',
-      lat: el.lat,
-      lng: el.lon
-    }))
-
-    communityCenters.value.forEach(center => {
-      const marker = L.marker([center.lat, center.lng], { icon: customIcon }).addTo(map!)
-      marker.bindPopup(`
-        <div class="p-2">
-          <h3 class="font-bold">${center.name}</h3>
-          <p class="text-sm text-gray-600 mb-2">Community Center</p>
-          <button class="bg-indigo-500 text-white px-3 py-1 rounded w-full text-sm" onclick="window.dispatchEvent(new CustomEvent('set-base', { detail: ${center.id} }))">
-            Set as Transit Base
-          </button>
-        </div>
-      `)
-    })
+    elements = data.elements || []
   } catch(e) {
-    console.error('Error fetching community centers', e)
+    console.error('Error fetching community centers, using fallback data', e)
+    // Fallback data in case the overpass API is down or blocking
+    elements = [
+      { id: 1001, tags: { name: 'Luxton Community Center' }, lat: 44.9634, lon: -93.2124 },
+      { id: 1002, tags: { name: 'MLK Recreation Center' }, lat: 44.9382, lon: -93.2709 },
+      { id: 1003, tags: { name: 'East Phillips Park Cultural and Community Center' }, lat: 44.9546, lon: -93.2519 }
+    ]
   }
+
+  communityCenters.value = elements.map((el: any) => ({
+    id: el.id,
+    name: el.tags?.name || 'Community Center',
+    lat: el.lat,
+    lng: el.lon
+  }))
+
+  communityCenters.value.forEach(center => {
+    const marker = L.marker([center.lat, center.lng], { icon: customIcon }).addTo(map!)
+    marker.bindPopup(`
+      <div class="p-2">
+        <h3 class="font-bold">${center.name}</h3>
+        <p class="text-sm text-gray-600 mb-2">Community Center</p>
+        <button class="bg-indigo-500 text-white px-3 py-1 rounded w-full text-sm" onclick="window.dispatchEvent(new CustomEvent('set-base', { detail: ${center.id} }))">
+          Set as Transit Base
+        </button>
+      </div>
+    `)
+  })
 }
 
 const handleOpenTransit = (e: any) => {
