@@ -80,50 +80,24 @@ const initMap = async () => {
 }
 
 const fetchCommunityCenters = async () => {
-  // Using Overpass API to get community centers in the area
-  let elements = []
-  try {
-    // 20 miles is ~32187 meters. Search around the 3 toy library locations.
-    const query = `
-      [out:json];
-      (
-        node["amenity"="community_centre"](around:32187,45.0039,-93.2570);
-        node["amenity"="community_centre"](around:32187,44.9602,-93.2324);
-        node["amenity"="community_centre"](around:32187,44.9387,-93.1557);
-      );
-      out;
-    `
-    const res = await fetch('https://overpass-api.de/api/interpreter', {
-      method: 'POST',
-      body: query
-    })
-    
-    if (!res.ok) throw new Error('API response not ok')
-    const data = await res.json()
-    elements = data.elements || []
-  } catch(e) {
-    console.error('Error fetching community centers, using fallback data', e)
-    // Fallback data in case the overpass API is down or blocked
-    elements = [
-      { id: 1001, tags: { name: 'Luxton Community Center' }, lat: 44.9634, lon: -93.2124 },
-      { id: 1002, tags: { name: 'MLK Recreation Center' }, lat: 44.9382, lon: -93.2709 },
-      { id: 1003, tags: { name: 'East Phillips Park Cultural and Community Center' }, lat: 44.9546, lon: -93.2519 },
-      { id: 1004, tags: { name: 'Logan Park Community Center' }, lat: 45.0028, lon: -93.2520 },
-      { id: 1005, tags: { name: 'Windom NE Recreation Center' }, lat: 45.0125, lon: -93.2386 },
-      { id: 1006, tags: { name: 'Painter Park Recreation Center' }, lat: 44.9388, lon: -93.2921 },
-      { id: 1007, tags: { name: 'Powderhorn Park Recreation Center' }, lat: 44.9405, lon: -93.2562 },
-      { id: 1008, tags: { name: 'Whittier Park Recreation Center' }, lat: 44.9587, lon: -93.2848 },
-      { id: 1009, tags: { name: 'Stewart Park Recreation Center' }, lat: 44.9525, lon: -93.2625 },
-      { id: 1010, tags: { name: 'Waite Park Recreation Center' }, lat: 45.0313, lon: -93.2359 }
-    ]
-  }
-
-  communityCenters.value = elements.map((el: any) => ({
-    id: el.id,
-    name: el.tags?.name || 'Community Center',
-    lat: el.lat,
-    lng: el.lon
-  }))
+  // Hardcoded list of 15 Community Centers focusing on immigrant/low-income housing & community building
+  communityCenters.value = [
+    { id: 1001, name: 'Centro Tyrone Guzman', url: 'https://www.centromn.org/', lat: 44.9602, lng: -93.2536 },
+    { id: 1002, name: 'Pillsbury United Communities - Brian Coyle Center', url: 'https://pillsburyunited.org/', lat: 44.9687, lng: -93.2427 },
+    { id: 1003, name: 'CAPI USA', url: 'https://capiusa.org/', lat: 45.0592, lng: -93.3087 },
+    { id: 1004, name: 'Hmong American Partnership (HAP)', url: 'https://www.hmong.org/', lat: 44.9616, lng: -93.1587 },
+    { id: 1005, name: 'CLUES St. Paul', url: 'https://clues.org/', lat: 44.9587, lng: -93.0722 },
+    { id: 1006, name: 'Hallie Q. Brown Community Center', url: 'https://www.hallieqbrown.org/', lat: 44.9525, lng: -93.1256 },
+    { id: 1007, name: 'Sabathani Community Center', url: 'https://sabathani.org/', lat: 44.9403, lng: -93.2678 },
+    { id: 1008, name: 'East Side Neighborhood Services', url: 'https://www.esns.org/', lat: 45.0041, lng: -93.2652 },
+    { id: 1009, name: 'Project for Pride in Living (PPL)', url: 'https://www.ppl-inc.org/', lat: 44.9654, lng: -93.2571 },
+    { id: 1010, name: 'Phyllis Wheatley Community Center', url: 'https://www.phylliswheatley.org/', lat: 44.9926, lng: -93.2965 },
+    { id: 1011, name: 'Neighborhood House', url: 'https://neighb.org/', lat: 44.9312, lng: -93.0858 },
+    { id: 1012, name: 'Merrick Community Services', url: 'https://merrickcs.org/', lat: 44.9754, lng: -93.0617 },
+    { id: 1013, name: 'Appetite for Change', url: 'https://appetiteforchangemn.org/', lat: 45.0003, lng: -93.2842 },
+    { id: 1014, name: 'Minneapolis American Indian Center', url: 'https://www.maicnet.org/', lat: 44.9625, lng: -93.2501 },
+    { id: 1015, name: 'Karen Organization of Minnesota', url: 'https://www.mnkaren.org/', lat: 44.9818, lng: -93.1091 }
+  ];
 
   communityCenters.value.forEach(center => {
     const marker = L.marker([center.lat, center.lng], { icon: customIcon }).addTo(map!)
@@ -131,7 +105,8 @@ const fetchCommunityCenters = async () => {
       <div class="p-2">
         <h3 class="font-bold">${center.name}</h3>
         <p class="text-sm text-gray-600 mb-2">Community Center</p>
-        <button class="bg-indigo-500 text-white px-3 py-1 rounded w-full text-sm" onclick="window.dispatchEvent(new CustomEvent('set-base', { detail: ${center.id} }))">
+        <a href="${center.url}" target="_blank" class="text-blue-500 underline text-sm mb-2 block">Visit Website</a>
+        <button class="bg-indigo-500 text-white px-3 py-1 rounded w-full text-sm mt-1" onclick="window.dispatchEvent(new CustomEvent('set-base', { detail: ${center.id} }))">
           Set as Transit Base
         </button>
       </div>
