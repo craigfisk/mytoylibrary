@@ -10,7 +10,7 @@
 ## 2. Map & Geographical Features
 - **Base Map:** Interactive map centered on the Minneapolis-St. Paul metropolitan area.
 - **MN Toy Library Locations:** Map markers prominently displaying the 3 official MN Toy Library locations.
-- **Community Centers:** Map markers displaying 15 specific Community Centers in Minneapolis-St. Paul that focus on immigrant/low-income housing and community building (e.g., Centro Tyrone Guzman, Brian Coyle Center, etc.), rather than generic recreation centers.
+- **Community Centers:** Map markers displaying 15 specific Community Centers in Minneapolis-St. Paul that focus on immigrant/low-income housing and community building (e.g., Centro Tyrone Guzman, Brian Coyle Center, etc.), rather than generic recreation centers. Hovering over a Community Center marker pops up a window with four rows of information: name, URL, mailing address, and full description.
 - **User Interaction:** Users can select Community Centers to set as a "base" for transit routing, or select Toy Library locations to view details and inventory.
 
 ## 3. Transit & Routing Features
