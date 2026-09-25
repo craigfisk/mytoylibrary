@@ -10,7 +10,7 @@
 ## 2. Map & Geographical Features
 - **Base Map:** Interactive map centered on the Minneapolis-St. Paul metropolitan area.
 - **MN Toy Library Locations:** Map markers prominently displaying the 3 official MN Toy Library locations.
-- **Community Centers:** Map markers displaying "Community Centers" located within a 20-mile radius of any MN Toy Library location.
+- **Community Centers:** Map markers displaying 15 specific Community Centers in Minneapolis-St. Paul that focus on immigrant/low-income housing and community building (e.g., Centro Tyrone Guzman, Brian Coyle Center, etc.), rather than generic recreation centers.
 - **User Interaction:** Users can select Community Centers to set as a "base" for transit routing, or select Toy Library locations to view details and inventory.
 
 ## 3. Transit & Routing Features
@@ -44,5 +44,5 @@
 ## 6. Required External Services / APIs (For Planning)
 - **Mapping Provider:** (e.g., Mapbox, Leaflet, or Google Maps) to render the MSP area and plot coordinates.
 - **Transit Routing API:** (e.g., Metro Transit API, Google Maps Directions API) to calculate transit routes and schedules.
-- **Places API:** To query and retrieve "Community Centers" within the 20-mile radius.
+- **Places API:** Not required, as the 15 specific community centers are hardcoded.
 - **Toy Database API / Backend:** To query location-specific toy inventory and manage user hold states (3 items, 1-week expiry).
